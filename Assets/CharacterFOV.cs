@@ -1,0 +1,64 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class CharacterFOV : MonoBehaviour
+{
+    public Transform target;
+    public float viewRadius;
+    public float viewAngle;
+    Player thisCharacter;
+    public Player otherCharacter;
+    [SerializeField] bool _call;
+
+    private void Start()
+    {
+        thisCharacter = GetComponent<Player>();
+    }
+
+    void Update()
+    {
+        if (InFOV(target))
+        {
+            GetComponent<MeshRenderer>().material.color = Color.red;
+            if (!_call)
+            {
+                otherCharacter.SetPath(target.position);
+                thisCharacter.SetPath(target.position);
+                _call = true;
+            }
+        }
+        else
+        {
+            GetComponent<MeshRenderer>().material.color = Color.white;
+            _call = false;
+        }
+        
+    }
+
+    public bool InFOV(Transform obj)
+    {
+        var dir = obj.position - transform.position;
+
+        if(dir.magnitude <= viewRadius)
+        {
+            if(Vector3.Angle(transform.forward, dir) <= viewAngle * 0.5f)
+                return GameManager.Instance.LineOfSight(transform.position, obj.position);
+        }
+
+        return false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+
+        Gizmos.DrawWireSphere(transform.position, viewRadius);
+
+        Vector3 left = Quaternion.Euler(0, -viewAngle * 0.5f, 0) * transform.forward;
+        Vector3 right = Quaternion.Euler(0, viewAngle * 0.5f, 0) * transform.forward;
+
+        Gizmos.DrawLine(transform.position, transform.position + left * viewRadius);
+        Gizmos.DrawLine(transform.position, transform.position + right * viewRadius);
+    }
+}

@@ -56,6 +56,12 @@ public class Enemy : MonoBehaviour
         }
         var dir = _path[0] - transform.position;
 
+        if (dir.sqrMagnitude > 0.001f)
+        {
+            Quaternion rot = Quaternion.LookRotation(dir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rot, 10f * Time.deltaTime);
+        }
+
         transform.position += dir.normalized * _speed * Time.deltaTime;
 
         if(dir.magnitude <= 0.3f)

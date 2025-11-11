@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     Node _start, _end;
-    public Player player;
+    public Enemy player;
     [SerializeField] LayerMask _mask;
     private void Awake()
     {

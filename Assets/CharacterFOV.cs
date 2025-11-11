@@ -7,13 +7,13 @@ public class CharacterFOV : MonoBehaviour
     public Transform target;
     public float viewRadius;
     public float viewAngle;
-    Player thisCharacter;
-    public Player otherCharacter;
+    Enemy thisCharacter;
+    public Enemy[] otherCharacter;
     [SerializeField] bool _call;
 
     private void Start()
     {
-        thisCharacter = GetComponent<Player>();
+        thisCharacter = GetComponent<Enemy>();
     }
 
     void Update()
@@ -23,7 +23,10 @@ public class CharacterFOV : MonoBehaviour
             GetComponent<MeshRenderer>().material.color = Color.red;
             if (!_call)
             {
-                otherCharacter.SetPath(target.position);
+                foreach(var other in otherCharacter)
+                {
+                    other.SetPath(target.position);
+                }
                 thisCharacter.SetPath(target.position);
                 _call = true;
             }

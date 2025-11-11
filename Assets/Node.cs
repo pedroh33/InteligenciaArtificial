@@ -67,30 +67,30 @@ public class Node : MonoBehaviour
         UpdateCost(1);
     }
 
-    private void OnMouseOver()
-    {
-        if (Input.GetMouseButtonDown(0))
-            GameManager.Instance.SetStartNode(this);
+    //private void OnMouseOver()
+    //{
+    //    if (Input.GetMouseButtonDown(0))
+    //        GameManager.Instance.SetStartNode(this);
 
-        if (Input.GetMouseButtonDown(1))
-            GameManager.Instance.SetEndNode(this);
+    //    if (Input.GetMouseButtonDown(1))
+    //        GameManager.Instance.SetEndNode(this);
 
-        if (Input.GetKey(KeyCode.UpArrow))
-            UpdateCost(Cost + 1);
+    //    //if (Input.GetKey(KeyCode.UpArrow))
+    //    //    UpdateCost(Cost + 1);
 
-        if (Input.GetKey(KeyCode.DownArrow))
-            UpdateCost(Cost - 1);
+    //    //if (Input.GetKey(KeyCode.DownArrow))
+    //    //    UpdateCost(Cost - 1);
 
-        if (Input.GetMouseButtonDown(2))
-        {
-            Block = !Block;
+    //    if (Input.GetMouseButtonDown(2))
+    //    {
+    //        Block = !Block;
 
-            if(Block)
-                GetComponent<MeshRenderer>().material.color = Color.gray; 
-            else
-                GetComponent<MeshRenderer>().material.color = Color.white;    
-        }           
-    }
+    //        if(Block)
+    //            GetComponent<MeshRenderer>().material.color = Color.gray; 
+    //        else
+    //            GetComponent<MeshRenderer>().material.color = Color.white;    
+    //    }           
+    //}
 
     void UpdateCost(int newCost)
     {

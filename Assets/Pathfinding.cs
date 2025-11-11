@@ -6,10 +6,10 @@ public static class Pathfinding
 {    
     public static List<Node> CalculateAStar(Node start, Node goal)
     {
-        var frontier = new PriorityQueue<Node>();
-        frontier.Enqueue(start, 0);
+        var frontier = new PriorityQueue<Node>(); //nueva Queue de nodos
+        frontier.Enqueue(start, 0); // Nodo de inicio con costo
 
-        var cameFrom = new Dictionary<Node, Node>();
+        var cameFrom = new Dictionary<Node, Node>(); //Para guardarme de donde vengo
         cameFrom.Add(start, null);
 
         var costSoFar = new Dictionary<Node, float>();

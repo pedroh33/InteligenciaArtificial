@@ -8,6 +8,19 @@ public class Enemy : MonoBehaviour
     List<Vector3> _path = new List<Vector3>();
     [SerializeField] Transform[] _waypointsPatrol;
     int _indexPatrol;
+    bool _seek;
+    Transform _target;
+
+    public void ApplySeek(Transform target) { 
+    
+        _target = target;
+        _seek = true;
+    }
+
+    public void DeactivateSeek(Transform target)
+    {
+        _seek = false;
+    }
     public void SetPath(Vector3 positionEnd)
     {
         Node start = ManagerNodes.GetNode(transform.position);
@@ -26,7 +39,22 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-       
+        if (_seek) {
+
+            if (_target == null)
+                return;
+
+            var seekDir = _target.position - transform.position;
+
+            if (seekDir.sqrMagnitude > 0.001f)
+            {
+                Quaternion rot = Quaternion.LookRotation(seekDir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, rot, 10f * Time.deltaTime);
+            }
+
+            transform.position += seekDir.normalized * _speed * Time.deltaTime;
+            return;
+        }
         if (_path.Count <= 0) 
         {
             if(!GameManager.Instance.LineOfSight(transform.position, _waypointsPatrol[_indexPatrol].transform.position))

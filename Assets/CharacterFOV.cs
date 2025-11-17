@@ -27,12 +27,13 @@ public class CharacterFOV : MonoBehaviour
                 {
                     other.SetPath(target.position);
                 }
-                thisCharacter.SetPath(target.position);
+                thisCharacter.ApplySeek(target);
                 _call = true;
             }
         }
         else
         {
+            thisCharacter.DeactivateSeek(target);
             GetComponent<MeshRenderer>().material.color = Color.white;
             _call = false;
         }

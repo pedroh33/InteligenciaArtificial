@@ -56,4 +56,23 @@ public static class Pathfinding
 
         return new List<Node>();
     }
+
+
+    public static List<Node> CalculateTheta(Node start, Node goal)
+    {
+        var aStar = CalculateAStar(start, goal);
+
+        int current = 0;
+
+        while (current + 2 < aStar.Count)
+        {
+            if (GameManager.Instance.LineOfSight(aStar[current].transform.position, aStar[current + 2].transform.position))
+                aStar.RemoveAt(current + 1);
+            else
+                current++;
+        }
+
+        return aStar;
+    }
+
 }

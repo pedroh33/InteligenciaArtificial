@@ -94,5 +94,6 @@ public class Enemy : MonoBehaviour
 
         if(dir.magnitude <= 0.3f)
             _path.RemoveAt(0);
+
     }
 }

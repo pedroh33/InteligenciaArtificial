@@ -7,16 +7,22 @@ public class Lider : MonoBehaviour
 {
 
     [SerializeField] Camera cam;
-    List<Vector3> _path = new List<Vector3>();
-    public float _speed = 4f;
     public bool liderA;
-    bool _seek;
-    Transform _target;
-    bool _shooted;
-    float rateOfFire = 3f;
+    List<Vector3> _path = new List<Vector3>();
 
     [SerializeField] int _maxHealth;
     private int _currentHealth;
+
+    public float _speed = 4f;
+    public float _maxSpeed = 8f;
+
+    Transform _target;
+    bool _seek;
+    [SerializeField] float _radiusArrive;
+
+    bool _shooted;
+    float rateOfFire = 3f;
+
 
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] float projectileSpeed;
@@ -110,16 +116,54 @@ public class Lider : MonoBehaviour
             {
                 Quaternion rot = Quaternion.LookRotation(seekDir);
                 transform.rotation = Quaternion.Slerp(transform.rotation, rot, 10f * Time.deltaTime);
-
-                
             }
 
             transform.position += seekDir.normalized * _speed * Time.deltaTime;
-
             
             return;
         }
     }
+
+
+    //public Vector3 Arrive(Vector3 target)
+    //{
+
+    //    Vector3 desired = (target - transform.position);
+    //    var distance = desired.magnitude;
+
+    //    if (desired.magnitude > _radiusArrive)
+    //    {
+    //        return Seek(target);
+    //    }
+
+    //    desired.Normalize();
+    //    desired *= _maxSpeed * (distance / _radiusArrive);
+
+    //    Vector3 steer = desired - _velocity;
+    //    steer = Vector3.ClampMagnitude(steer, _maxSpeed);
+    //    return steer;
+    //}
+
+    //public void LookAtEnemy()
+    //{
+    //    Agent nearest = null;
+    //    var distance = Mathf.Infinity;
+    //    foreach (var target in GameManager.instance.boids)
+    //    {
+    //        if (!target.isActiveAndEnabled) continue;
+    //        float dis = Vector3.Distance(target.transform.position, transform.position);
+    //        if (dis <= radiusLook && dis <= distance)
+    //        {
+    //            distance = dis;
+    //            nearest = target;
+    //        }
+    //    }
+    //    if (nearest != null)
+    //    {
+    //        transform.forward = Vector3.Lerp(transform.forward, (nearest.transform.position - transform.position).normalized, Time.deltaTime * 2);
+    //        StartCoroutine(ShootBullet());
+    //    }
+    //}
 
 
     IEnumerator ShootRoutine()
@@ -150,6 +194,7 @@ public class Lider : MonoBehaviour
 
         _shooted = false;
     }
+
 
     void Update()
     {

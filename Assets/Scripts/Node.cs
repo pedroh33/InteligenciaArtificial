@@ -15,11 +15,15 @@ public class Node : MonoBehaviour
     {
         ManagerNodes.Subscribe(this);
     }
-
-    private void OnDestroy()
+    public void Initialize(Grid grid, int x, int y)
     {
-        ManagerNodes.Unsubscribe(this);
+        _grid = grid;
+        _x = x;
+        _y = y;
+
+        UpdateCost(1);
     }
+
 
     public void NewNeighbord(Node node)
     {
@@ -58,14 +62,6 @@ public class Node : MonoBehaviour
             return _neighbords;
         }
     }
-    public void Initialize(Grid grid, int x, int y)
-    {
-        _grid = grid;
-        _x = x;
-        _y = y;
-
-        UpdateCost(1);
-    }
 
     //private void OnMouseOver()
     //{
@@ -100,6 +96,10 @@ public class Node : MonoBehaviour
             GetComponentInChildren<TextMeshProUGUI>().text = Cost.ToString();   
     }
 
+    private void OnDestroy()
+    {
+        ManagerNodes.Unsubscribe(this);
+    }
     private void OnDrawGizmos()
     {
        // Gizmos.DrawWireSphere(transform.position, ManagerNodes.minNeighbordDist);

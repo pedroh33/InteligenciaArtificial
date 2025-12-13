@@ -7,13 +7,14 @@ public class CharacterFOV : MonoBehaviour
     public Transform target;
     public float viewRadius;
     public float viewAngle;
-    Enemy thisCharacter;
+    Lider thisCharacter;
     public Enemy[] otherCharacter;
     [SerializeField] bool _call;
 
     private void Start()
     {
-        thisCharacter = GetComponent<Enemy>();
+        thisCharacter = GetComponent<Lider>();
+        this.transform.forward = thisCharacter.transform.forward;
     }
 
     void Update()

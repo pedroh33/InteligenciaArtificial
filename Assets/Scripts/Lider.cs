@@ -6,6 +6,8 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Lider : MonoBehaviour
 {
+    public GameObject muzzleFlash;
+    public GameObject sangre;
     public float health;
     [SerializeField] Camera cam;
     public bool liderA;
@@ -29,6 +31,9 @@ public class Lider : MonoBehaviour
     [SerializeField] float projectileSpeed;
 
     public Transform firepoint;
+
+    [SerializeField] float rayDistance = 20f;
+    [SerializeField] LayerMask hitMask;
     public void ClickPosition()
     {
         if (Input.GetMouseButtonDown(0) && liderA)
@@ -176,33 +181,42 @@ public class Lider : MonoBehaviour
     //}
 
 
-    IEnumerator ShootRoutine()
+    IEnumerator RaycastShootRoutine()
     {
-        while (!_shooted)
+        while (_seek)
         {
-            Shoot();
+            ShootRaycast();
             yield return new WaitForSeconds(rateOfFire);
         }
 
         _shooted = false;
     }
 
-    void Shoot()
+    void ShootRaycast()
     {
-        GameObject projectile = Instantiate(projectilePrefab, firepoint.transform.position, Quaternion.identity);
-        projectile.transform.forward = transform.forward;
-        //Rigidbody rb = projectile.AddComponent<Rigidbody>();
-        //rb.useGravity = false;
-        //rb.AddForce(transform.forward * projectileSpeed, ForceMode.Impulse);
+        Ray ray = new Ray(firepoint.position, firepoint.forward);
+        RaycastHit hit;
+        StartCoroutine(MuzzleFlash());
+        if (Physics.Raycast(ray, out hit, rayDistance, hitMask))
+        {
+            Debug.Log($"Raycast impactó a: {hit.collider.name}");
+            Lider liderImpactado = hit.collider.GetComponent<Lider>();
 
-        _shooted = true;
+            if (liderImpactado != null && liderImpactado != this)
+            {
+                liderImpactado.Daniar(20);
+            }
+        }
+
+        Debug.DrawRay(firepoint.position, firepoint.forward * rayDistance, Color.red, 0.5f);
     }
 
     private void Start()
     {
         _currentHealth = _maxHealth;
-
+        muzzleFlash.SetActive(false);
         _shooted = false;
+        sangre.SetActive(false);
     }
 
 
@@ -214,8 +228,32 @@ public class Lider : MonoBehaviour
 
         if (_seek && !_shooted)
         {
-            StartCoroutine(ShootRoutine());
+            _shooted = true;
+            StartCoroutine(RaycastShootRoutine());
         }
 
+    }
+    public IEnumerator MuzzleFlash()
+    {
+        muzzleFlash.SetActive(true);
+        yield return new WaitForSeconds(0.3f);
+        muzzleFlash.SetActive(false);
+    }
+    public IEnumerator Sangrar()
+    {
+        sangre.SetActive(true);
+        yield return new WaitForSeconds(0.4f);
+        sangre.SetActive(false);
+    }
+    public void Daniar(int cantidad)
+    {
+        health -= cantidad;
+        StartCoroutine(Sangrar());
+        Debug.Log($"{name} recibió {cantidad} de daño. Vida actual: {health}");
+
+        if (health <= 0)
+        {
+            Debug.Log($"{name} murió");
+        }
     }
 }

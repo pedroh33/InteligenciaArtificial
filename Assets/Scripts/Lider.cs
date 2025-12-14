@@ -40,6 +40,13 @@ public class Lider : MonoBehaviour
     [SerializeField] float avoidDistance = 2f;
     [SerializeField] float avoidStrength = 2f;
     [SerializeField] float avoidRadius = 0.6f;
+
+    public Transform cargadorVida;
+    bool _isEscaping;
+    bool _isGoing;
+
+
+
     public void ClickPosition()
     {
         if (Input.GetMouseButtonDown(0) && liderA)
@@ -250,15 +257,45 @@ public class Lider : MonoBehaviour
 
     void Update()
     {
-        ClickPosition();
-        TraversePath();
-        Seek();
-
-        if (_seek && !_shooted)
+        if (HasHealth())
         {
-            _shooted = true;
-            StartCoroutine(RaycastShootRoutine());
+            ClickPosition();
+            Seek();
+
+            if (_seek && !_shooted)
+            {
+                _shooted = true;
+                StartCoroutine(RaycastShootRoutine());
+            }
         }
+        else if (!HasHealth() && !_isEscaping)
+        {
+            ApplyEscape();
+
+        }
+            TraversePath();
+        
+        //ClickPosition();
+        //TraversePath();
+        //Seek();
+
+        //if (_seek && !_shooted)
+        //{
+        //    _shooted = true;
+        //    StartCoroutine(RaycastShootRoutine());
+        //}
+
+        //Esto es para recargar la vida cuando llega a un punto de recarga
+        float distancia = Vector3.Distance(transform.position, cargadorVida.position);
+
+        if (distancia < 3f)
+        {
+            health = 120;
+            _isGoing = false;
+            _isEscaping = false;
+
+        }
+
 
     }
     public IEnumerator MuzzleFlash()
@@ -284,4 +321,34 @@ public class Lider : MonoBehaviour
             Debug.Log($"{name} murió");
         }
     }
+
+    public bool HasHealth()
+    {
+        if (health >= 45)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void GoGetHealth()
+    {
+            SetPath(cargadorVida.position);
+    }
+
+    public void ApplyEscape()
+    {
+        _isEscaping = true;
+
+        if (_isEscaping && !_isGoing)
+        {
+            GoGetHealth();
+            _isGoing = true;
+        }
+    }
+
+
 }

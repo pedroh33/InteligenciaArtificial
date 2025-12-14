@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterFOV : MonoBehaviour
 {
     public Transform target;
-    public Transform cargadorVida;
+    
     public float viewRadius;
     public float viewAngle;
     Lider thisCharacter;
@@ -39,13 +39,7 @@ public class CharacterFOV : MonoBehaviour
             GetComponent<MeshRenderer>().material.color = Color.white;
             _call = false;
         }
-        //Esto es para recargar la vida cuando llega a un punto de recarga
-        float distancia = Vector3.Distance(transform.position, cargadorVida.position);
-
-        if (distancia < 3f)
-        {
-            thisCharacter.health = 120;
-        }
+        
     }
 
     public bool InFOV(Transform obj)

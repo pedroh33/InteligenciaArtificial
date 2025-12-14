@@ -34,6 +34,12 @@ public class Lider : MonoBehaviour
 
     [SerializeField] float rayDistance = 20f;
     [SerializeField] LayerMask hitMask;
+
+    [Header("Obstacle Avoidance")]
+    [SerializeField] LayerMask obstacleMask;
+    [SerializeField] float avoidDistance = 2f;
+    [SerializeField] float avoidStrength = 2f;
+    [SerializeField] float avoidRadius = 0.6f;
     public void ClickPosition()
     {
         if (Input.GetMouseButtonDown(0) && liderA)
@@ -91,12 +97,34 @@ public class Lider : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, rot, 10f * Time.deltaTime);
         }
 
-        transform.position += dir.normalized * _speed * Time.deltaTime;
+        Vector3 moveDir = dir.normalized;
+        Vector3 avoidance = ObstacleAvoidance(moveDir);
+
+        Vector3 finalDir = (moveDir + avoidance).normalized;
+
+        transform.position += finalDir * _speed * Time.deltaTime;
 
         if (dir.magnitude <= 0.3f)
             _path.RemoveAt(0);
     }
+    Vector3 ObstacleAvoidance(Vector3 moveDir)
+    {
+        Vector3 origin = transform.position + Vector3.up * 0.5f;
 
+        if (Physics.SphereCast(origin, avoidRadius, moveDir, out RaycastHit hit, avoidDistance, obstacleMask))
+        {
+            Vector3 dirToObstacle = hit.point - transform.position;
+            float angle = Vector3.SignedAngle(transform.forward, dirToObstacle, Vector3.up);
+
+            Vector3 avoidDir = angle >= 0 ? -transform.right : transform.right;
+
+            Debug.DrawRay(origin, avoidDir * avoidDistance, Color.yellow);
+
+            return avoidDir.normalized * avoidStrength;
+        }
+
+        return Vector3.zero;
+    }
 
     public void ApplySeek(Transform target)
     {

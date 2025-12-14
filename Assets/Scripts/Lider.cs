@@ -1,11 +1,12 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
 public class Lider : MonoBehaviour
 {
-
+    public float health;
     [SerializeField] Camera cam;
     public bool liderA;
     List<Vector3> _path = new List<Vector3>();
@@ -17,15 +18,17 @@ public class Lider : MonoBehaviour
     public float _maxSpeed = 8f;
 
     Transform _target;
-    bool _seek;
+    [SerializeField] bool _seek;
     [SerializeField] float _radiusArrive;
 
-    bool _shooted;
+    [SerializeField] bool _shooted;
     float rateOfFire = 3f;
-
+    [SerializeField] float _stopDistance = 1.2f;
 
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] float projectileSpeed;
+
+    public Transform firepoint;
     public void ClickPosition()
     {
         if (Input.GetMouseButtonDown(0) && liderA)
@@ -104,26 +107,33 @@ public class Lider : MonoBehaviour
 
     public void Seek()
     {
-        if (_seek)
-        {
-
-            if (_target == null)
-                return;
-
-            var seekDir = _target.position - transform.position;
-
-            if (seekDir.sqrMagnitude > 0.001f)
-            {
-                Quaternion rot = Quaternion.LookRotation(seekDir);
-                transform.rotation = Quaternion.Slerp(transform.rotation, rot, 10f * Time.deltaTime);
-            }
-
-            transform.position += seekDir.normalized * _speed * Time.deltaTime;
-            
+        if (!_seek || _target == null)
             return;
+
+        Vector3 seekDir = _target.position - transform.position;
+
+        Vector3 flatDir = new Vector3(seekDir.x, 0f, seekDir.z);
+
+        if (flatDir.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRot = Quaternion.LookRotation(flatDir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 4 * Time.deltaTime);
+        }
+
+        float distance = seekDir.magnitude;
+
+        if (distance > _stopDistance)
+        {
+            transform.position += flatDir.normalized * _speed * Time.deltaTime;
         }
     }
-
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bullet"))
+        {
+            Debug.Log("tiro");
+        }
+    }
 
     //public Vector3 Arrive(Vector3 target)
     //{
@@ -179,7 +189,7 @@ public class Lider : MonoBehaviour
 
     void Shoot()
     {
-        GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+        GameObject projectile = Instantiate(projectilePrefab, firepoint.transform.position, Quaternion.identity);
         projectile.transform.forward = transform.forward;
         //Rigidbody rb = projectile.AddComponent<Rigidbody>();
         //rb.useGravity = false;

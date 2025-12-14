@@ -26,6 +26,12 @@ public class Bullet : MonoBehaviour
             rb.AddForce(transform.forward * projectileSpeed, ForceMode.Impulse);
         }
     }
-
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Npc"))
+        {
+            Destroy(gameObject);
+        }
+    }
 
 }

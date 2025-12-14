@@ -4,7 +4,7 @@ using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
 
-public class BoidFlock : MonoBehaviour
+public class BoidFlock : Agent
 {
     public static List<BoidFlock> AllBoids = new List<BoidFlock>();
 
@@ -48,10 +48,14 @@ public class BoidFlock : MonoBehaviour
         ).normalized * _maxVelocity;
     }
 
-    void Update()
+    protected override void Update()
     {
-        Flocking();
-        Move();
+        base.Update();
+        if (HasHealth())
+        {
+            Flocking();
+            Move();
+        }
     }
 
     void AddForce(Vector3 force)

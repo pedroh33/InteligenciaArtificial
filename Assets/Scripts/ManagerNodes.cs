@@ -42,7 +42,6 @@ public static class ManagerNodes
         Debug.Log("GetNode");
         foreach (Node node in _totalNodes)
         {
-            Debug.Log(node.gameObject.name);
             var currentDist = Vector3.Distance(node.transform.position, position);
             
             if (currentDist < minDist)

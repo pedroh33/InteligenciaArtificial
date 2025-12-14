@@ -216,7 +216,6 @@ public class Lider : MonoBehaviour
     //    }
     //}
 
-
     IEnumerator RaycastShootRoutine()
     {
         while (_seek)
@@ -247,60 +246,6 @@ public class Lider : MonoBehaviour
         Debug.DrawRay(firepoint.position, firepoint.forward * rayDistance, Color.red, 0.5f);
     }
 
-    private void Start()
-    {
-        _currentHealth = _maxHealth;
-        muzzleFlash.SetActive(false);
-        _shooted = false;
-        sangre.SetActive(false);
-
-        _currentSpeed = _baseSpeed;
-    }
-
-
-    void Update()
-    {
-        if (HasHealth())
-        {
-            ClickPosition();
-            Seek();
-
-            if (_seek && !_shooted)
-            {
-                _shooted = true;
-                StartCoroutine(RaycastShootRoutine());
-            }
-        }
-        else if (!HasHealth() && !_isEscaping)
-        {
-            ApplyEscape();
-
-        }
-            TraversePath();
-        
-        //ClickPosition();
-        //TraversePath();
-        //Seek();
-
-        //if (_seek && !_shooted)
-        //{
-        //    _shooted = true;
-        //    StartCoroutine(RaycastShootRoutine());
-        //}
-
-        //Esto es para recargar la vida cuando llega a un punto de recarga
-        float distancia = Vector3.Distance(transform.position, cargadorVida.position);
-
-        if (distancia < 3f)
-        {
-            health = 120;
-            _isGoing = false;
-            _isEscaping = false;
-            _currentSpeed = _baseSpeed;
-        }
-
-
-    }
     public IEnumerator MuzzleFlash()
     {
         muzzleFlash.SetActive(true);
@@ -353,6 +298,51 @@ public class Lider : MonoBehaviour
             _isGoing = true;
 
         }
+    }
+    private void Start()
+    {
+        _currentHealth = _maxHealth;
+        muzzleFlash.SetActive(false);
+        _shooted = false;
+        sangre.SetActive(false);
+
+        _currentSpeed = _baseSpeed;
+    }
+
+
+    void Update()
+    {
+        if (HasHealth())
+        {
+            ClickPosition();
+            Seek();
+
+            if (_seek && !_shooted)
+            {
+                _shooted = true;
+                StartCoroutine(RaycastShootRoutine());
+            }
+        }
+        else if (!HasHealth() && !_isEscaping)
+        {
+            ApplyEscape();
+
+        }
+            TraversePath();
+        
+
+        //Esto es para recargar la vida cuando llega a un punto de recarga
+        float distancia = Vector3.Distance(transform.position, cargadorVida.position);
+
+        if (distancia < 3f)
+        {
+            health = 120;
+            _isGoing = false;
+            _isEscaping = false;
+            _currentSpeed = _baseSpeed;
+        }
+
+
     }
 
 

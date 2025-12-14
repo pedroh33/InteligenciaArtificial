@@ -16,7 +16,8 @@ public class Lider : MonoBehaviour
     [SerializeField] int _maxHealth;
     private int _currentHealth;
 
-    public float _speed = 4f;
+    public float _baseSpeed = 4f;
+    public float _currentSpeed;
     public float _maxSpeed = 8f;
 
     Transform _target;
@@ -109,7 +110,7 @@ public class Lider : MonoBehaviour
 
         Vector3 finalDir = (moveDir + avoidance).normalized;
 
-        transform.position += finalDir * _speed * Time.deltaTime;
+        transform.position += finalDir * _currentSpeed * Time.deltaTime;
 
         if (dir.magnitude <= 0.3f)
             _path.RemoveAt(0);
@@ -164,7 +165,7 @@ public class Lider : MonoBehaviour
 
         if (distance > _stopDistance)
         {
-            transform.position += flatDir.normalized * _speed * Time.deltaTime;
+            transform.position += flatDir.normalized * _currentSpeed * Time.deltaTime;
         }
     }
     void OnTriggerEnter(Collider other)
@@ -252,6 +253,8 @@ public class Lider : MonoBehaviour
         muzzleFlash.SetActive(false);
         _shooted = false;
         sangre.SetActive(false);
+
+        _currentSpeed = _baseSpeed;
     }
 
 
@@ -293,7 +296,7 @@ public class Lider : MonoBehaviour
             health = 120;
             _isGoing = false;
             _isEscaping = false;
-
+            _currentSpeed = _baseSpeed;
         }
 
 
@@ -336,7 +339,8 @@ public class Lider : MonoBehaviour
 
     public void GoGetHealth()
     {
-            SetPath(cargadorVida.position);
+        SetPath(cargadorVida.position);
+        _currentSpeed = _maxSpeed;
     }
 
     public void ApplyEscape()
@@ -347,6 +351,7 @@ public class Lider : MonoBehaviour
         {
             GoGetHealth();
             _isGoing = true;
+
         }
     }
 

@@ -54,11 +54,12 @@ public class BoidFlock : Agent
 
     protected override void Update()
     {
+
         if (HasHealth())
         {
+            Move();
             Seek();
             Flocking();
-            Move();
             
 
             if (_seek && !_shooted)
@@ -71,6 +72,9 @@ public class BoidFlock : Agent
         }
         else if (!HasHealth() && !_isEscaping)
         {
+            Move();
+
+            TraversePath();
             ApplyEscape();
 
         }
@@ -109,7 +113,7 @@ public class BoidFlock : Agent
         _velocity.y = 0f;
         transform.position += _velocity * Time.deltaTime;
 
-        if (_velocity.sqrMagnitude > 0.0001f)
+        if (_velocity.sqrMagnitude > 0.0001f && !_seek)
             transform.forward = _velocity.normalized;
 
         _acceleration = Vector3.zero;

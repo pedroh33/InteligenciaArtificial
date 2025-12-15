@@ -121,10 +121,10 @@ public class CharacterFOV : MonoBehaviour
             _hasTarget = false;
             if (thisBoid != null)
             {
-                thisBoid.leaderWeight = 1f;
-                thisBoid.weightAlignment = 1;
-                thisBoid.weightCohesion = 1;
-                thisBoid.weightSeparation = 1;
+                thisBoid.leaderWeight = thisBoid.leaderWeightValue;
+                thisBoid.weightAlignment = thisBoid.weightAlignmentValue;
+                thisBoid.weightCohesion = thisBoid.weightCohesionValue;
+                thisBoid.weightSeparation = thisBoid.weightSeparationValue;
             }
         }
     }

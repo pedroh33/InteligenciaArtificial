@@ -42,7 +42,18 @@ public class Agent : MonoBehaviour
     public Transform cargadorVida;
     protected bool _isEscaping;
     protected bool _isGoing;
+    private void OnDrawGizmosSelected()
+    {
 
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, avoidDistance);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, avoidStrength);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, avoidRadius);
+    }
 
     public void SetPath(Vector3 positionEnd)
     {

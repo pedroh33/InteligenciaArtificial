@@ -26,7 +26,7 @@ public class BoidFlock : Agent
     [Header("Leader")]
     [SerializeField] Transform leader;
     [SerializeField] float leaderRadius = 15f;
-    [SerializeField] float leaderWeight = 1.5f;
+    [SerializeField]public float leaderWeight = 1.5f;
 
     /*  void OnEnable()
       {
@@ -52,13 +52,13 @@ public class BoidFlock : Agent
 
     private void Update()
     {
-       // base.Update();
+        base.Update();
         if (HasHealth())
         {
-            
+            Flocking();
+            Move();
         }
-        Flocking();
-        Move();
+       
     }
 
     void AddForce(Vector3 force)

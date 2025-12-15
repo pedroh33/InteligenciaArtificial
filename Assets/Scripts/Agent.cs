@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Agent : MonoBehaviour
@@ -265,7 +266,7 @@ public class Agent : MonoBehaviour
         }
 
         TraversePath();
-
+        
 
         //Esto es para recargar la vida cuando llega a un punto de recarga
         float distancia = Vector3.Distance(transform.position, cargadorVida.position);
@@ -278,8 +279,16 @@ public class Agent : MonoBehaviour
             _currentSpeed = _baseSpeed;
         }
     }
+    private void LateUpdate()
+    {
+        Vector3 euler = transform.eulerAngles;
+        transform.rotation = Quaternion.Euler(0f, euler.y, 0f);
 
+       // Vector3 fijarPo = transform.position; 
+        //transform.position = new Vector3(fijarPo.x, 0f, fijarPo.z);
+    }
 }
+    
 
     //public Vector3 Arrive(Vector3 target)
     //{

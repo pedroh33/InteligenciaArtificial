@@ -16,10 +16,16 @@ public class CharacterFOV : MonoBehaviour
 
     [SerializeField] bool _call;
     private bool _hasTarget;
-
+    BoidFlock thisBoid;
     private void Start()
-    {
+    {  
         thisCharacter = GetComponent<Agent>();
+        if(thisCharacter.TryGetComponent<BoidFlock>(out var boidFlock))
+        {
+            thisBoid = boidFlock;
+            Debug.Log("Instancio");
+        }
+        
         transform.forward = thisCharacter.transform.forward;
     }
 
@@ -90,6 +96,9 @@ public class CharacterFOV : MonoBehaviour
             target = nearest.transform;
             _hasTarget = true;
 
+            if (thisBoid != null) {
+                thisBoid.leaderWeight = 0f;
+            }         
             transform.forward = Vector3.Lerp(
                 transform.forward,
                 (nearest.transform.position - transform.position).normalized,
@@ -100,6 +109,10 @@ public class CharacterFOV : MonoBehaviour
         {
             target = null;
             _hasTarget = false;
+            if (thisBoid != null)
+            {
+                thisBoid.leaderWeight = 1.5f;
+            }
         }
     }
 

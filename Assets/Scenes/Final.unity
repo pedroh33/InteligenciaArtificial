@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641275, b: 0.5748171, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2114,12 +2114,12 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 64
-  avoidDistance: 10.97
-  avoidStrength: 21.59
-  avoidRadius: 6.52
+  avoidDistance: 4
+  avoidStrength: 10.36
+  avoidRadius: 1.78
   cargadorVida: {fileID: 896634932}
   _maxVelocity: 5
-  _maxForce: 2
+  _maxForce: 10
   _radiusSeparation: 5
   _radiusDetect: 5
   weightSeparation: 1
@@ -4723,7 +4723,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   avoidDistance: 2
-  avoidStrength: 0.5
+  avoidStrength: 7.51
   avoidRadius: 0.6
   cargadorVida: {fileID: 896634932}
   cam: {fileID: 963194227}
@@ -14752,7 +14752,7 @@ Transform:
   m_GameObject: {fileID: 2088155340}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 13.24, y: 0, z: -9.71}
+  m_LocalPosition: {x: 13.24, y: -0, z: -8.48}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14916,8 +14916,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   avoidDistance: 4
-  avoidStrength: 2
-  avoidRadius: 3
+  avoidStrength: 10.36
+  avoidRadius: 1
   cargadorVida: {fileID: 896634932}
   _maxVelocity: 5
   _maxForce: 10

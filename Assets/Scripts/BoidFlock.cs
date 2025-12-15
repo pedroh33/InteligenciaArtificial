@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -95,28 +95,26 @@ public class BoidFlock : Agent
 
     void Move()
     {
+        // 1️⃣ avoidance primero (prioridad alta)
+        Vector3 avoidance = ObstacleAvoidance(_velocity.normalized);
+        AddForce(avoidance * 3f); // peso extra
 
+        // 2️⃣ integrar fuerzas
         _velocity += _acceleration * Time.deltaTime;
         _velocity = Vector3.ClampMagnitude(_velocity, _maxVelocity);
 
-
+        // 3️⃣ mover
         _velocity.y = 0f;
         transform.position += _velocity * Time.deltaTime;
 
-        // fijar altura
-        transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
-
+        // 4️⃣ rotación
         if (_velocity.sqrMagnitude > 0.0001f)
             transform.forward = _velocity.normalized;
 
-        Vector3 movDir = transform.forward;
-        Vector3 avoidance = ObstacleAvoidance(movDir);
-        Vector3 finalDir = (movDir + avoidance).normalized;
-
-        AddForce(finalDir);
-
+        // 5️⃣ reset
         _acceleration = Vector3.zero;
     }
+
 
     void Flocking()
     {

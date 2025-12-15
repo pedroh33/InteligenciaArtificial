@@ -17,6 +17,7 @@ public class CharacterFOV : MonoBehaviour
     [SerializeField] bool _call;
     private bool _hasTarget;
     BoidFlock thisBoid;
+
     private void Start()
     {  
         thisCharacter = GetComponent<Agent>();
@@ -36,7 +37,16 @@ public class CharacterFOV : MonoBehaviour
         if (target == null)
         {
             thisCharacter.DeactivateSeek(null);
-            GetComponent<MeshRenderer>().material.color = Color.white;
+            if (thisCharacter.tipo)
+            {
+                GetComponent<MeshRenderer>().material.color = Color.blue;
+            }
+            else
+            {
+                GetComponent<MeshRenderer>().material.color = Color.green;
+            }
+            
+
             _call = false;
             return;
         }

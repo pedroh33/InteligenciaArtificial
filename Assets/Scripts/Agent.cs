@@ -8,10 +8,12 @@ public class Agent : MonoBehaviour
     public bool tipo;
     [SerializeField] int _maxHealth;
     private int _currentHealth;
+    public float health;
+
     List<Vector3> _path = new List<Vector3>();
     public GameObject muzzleFlash;
     public GameObject sangre;
-    public float health;
+
     public float _baseSpeed = 4f;
     public float _currentSpeed;
     public float _maxSpeed = 8f;
@@ -24,7 +26,6 @@ public class Agent : MonoBehaviour
     float rateOfFire = 3f;
     [SerializeField] float _stopDistance = 1.2f;
 
-   // [SerializeField] GameObject projectilePrefab;
     [SerializeField] float projectileSpeed;
     [SerializeField] float rayDistance = 20f;
     public LayerMask enemyLayer;
@@ -37,8 +38,8 @@ public class Agent : MonoBehaviour
     [SerializeField] float avoidRadius = 0.6f;
 
     public Transform cargadorVida;
-    bool _isEscaping;
-    bool _isGoing;
+    protected bool _isEscaping;
+    protected bool _isGoing;
 
 
     public void SetPath(Vector3 positionEnd)
@@ -64,18 +65,26 @@ public class Agent : MonoBehaviour
         }
         var dir = _path[0] - transform.position;
 
-        if (dir.sqrMagnitude > 0.001f)
-        {
-            Quaternion rot = Quaternion.LookRotation(dir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rot, 10f * Time.deltaTime);
-        }
+        //if (dir.sqrMagnitude > 0.001f)
+        //{
+        //    Quaternion rot = Quaternion.LookRotation(dir);
+        //    transform.rotation = Quaternion.Slerp(transform.rotation, rot, 10f * Time.deltaTime);
+
+        //    Vector3 euler = transform.eulerAngles;
+        //    transform.rotation = Quaternion.Euler(0f, euler.y, 0f);
+        //}
 
         Vector3 moveDir = dir.normalized;
         Vector3 avoidance = ObstacleAvoidance(moveDir);
 
         Vector3 finalDir = (moveDir + avoidance).normalized;
 
-        transform.position += finalDir * _currentSpeed * Time.deltaTime;
+        transform.position += new Vector3(finalDir.x * _currentSpeed * Time.deltaTime, 0, finalDir.z * _currentSpeed * Time.deltaTime);
+
+
+        //transform.position += finalDir * _currentSpeed * Time.deltaTime;
+
+
 
         if (dir.magnitude <= 0.3f)
             _path.RemoveAt(0);
@@ -98,7 +107,6 @@ public class Agent : MonoBehaviour
 
         return Vector3.zero;
     }
-
 
 
     public void ApplySeek(Transform target)
@@ -162,7 +170,8 @@ public class Agent : MonoBehaviour
         if (Physics.Raycast(ray, out hit, rayDistance, enemyLayer))
         {
             Debug.Log($"Raycast impactó a: {hit.collider.name}");
-            Agent enemigoImpactado = hit.collider.GetComponent<Agent>();
+
+            Agent enemigoImpactado = hit.collider.GetComponentInParent<Agent>();
 
             if (enemigoImpactado != null && enemigoImpactado != this)
             {
@@ -266,6 +275,7 @@ public class Agent : MonoBehaviour
         }
 
         TraversePath();
+
         
 
         //Esto es para recargar la vida cuando llega a un punto de recarga
@@ -281,11 +291,9 @@ public class Agent : MonoBehaviour
     }
     private void LateUpdate()
     {
-        Vector3 euler = transform.eulerAngles;
-        transform.rotation = Quaternion.Euler(0f, euler.y, 0f);
+        //Vector3 euler = transform.eulerAngles;
+        //transform.rotation = Quaternion.Euler(0f, euler.y, 0f);
 
-       // Vector3 fijarPo = transform.position; 
-        //transform.position = new Vector3(fijarPo.x, 0f, fijarPo.z);
     }
 }
     

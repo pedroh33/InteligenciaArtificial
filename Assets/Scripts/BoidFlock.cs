@@ -50,15 +50,47 @@ public class BoidFlock : Agent
         ).normalized * _maxVelocity;
     }
 
-    private void Update()
+    protected override void Update()
     {
-        base.Update();
+        //base.Update();
+
         if (HasHealth())
         {
+            Seek();
             Flocking();
             Move();
+
+            if (_seek && !_shooted)
+            {
+                _shooted = true;
+                StartCoroutine(RaycastShootRoutine());
+            }
         }
-       
+        else if (!HasHealth() && !_isEscaping)
+        {
+            ApplyEscape();
+
+        }
+
+        TraversePath();
+
+
+        //Esto es para recargar la vida cuando llega a un punto de recarga
+        float distancia = Vector3.Distance(transform.position, cargadorVida.position);
+
+        if (distancia < 3f)
+        {
+            health = 120;
+            _isGoing = false;
+            _isEscaping = false;
+            _currentSpeed = _baseSpeed;
+        }
+        //if (HasHealth())
+        //{
+        //    Flocking();
+        //    Move();
+        //}
+
     }
 
     void AddForce(Vector3 force)

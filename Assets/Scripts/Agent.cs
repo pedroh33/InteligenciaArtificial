@@ -18,7 +18,7 @@ public class Agent : MonoBehaviour
     public float _currentSpeed;
     public float _maxSpeed = 8f;
 
-    Transform _target;
+    protected Transform _target;
     public bool _seek;
     [SerializeField] protected float _stopDistance;
 
@@ -67,14 +67,14 @@ public class Agent : MonoBehaviour
         }
         var dir = _path[0] - transform.position;
 
-        //if (dir.sqrMagnitude > 0.001f)
-        //{
-        //    Quaternion rot = Quaternion.LookRotation(dir);
-        //    transform.rotation = Quaternion.Slerp(transform.rotation, rot, 10f * Time.deltaTime);
+        if (dir.sqrMagnitude > 0.001f && !_seek)
+        {
+            Quaternion rot = Quaternion.LookRotation(dir);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rot, 10f * Time.deltaTime);
 
-        //    Vector3 euler = transform.eulerAngles;
-        //    transform.rotation = Quaternion.Euler(0f, euler.y, 0f);
-        //}
+           Vector3 euler = transform.eulerAngles;
+            transform.rotation = Quaternion.Euler(0f, euler.y, 0f);
+        }
 
         Vector3 moveDir = dir.normalized;
         Vector3 avoidance = ObstacleAvoidance(moveDir);

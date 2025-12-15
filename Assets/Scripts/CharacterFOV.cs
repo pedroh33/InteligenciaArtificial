@@ -121,7 +121,7 @@ public class CharacterFOV : MonoBehaviour
             _hasTarget = false;
             if (thisBoid != null)
             {
-                thisBoid.leaderWeight = 1.5f;
+                thisBoid.leaderWeight = 1f;
             }
         }
     }

@@ -54,18 +54,19 @@ public class BoidFlock : Agent
 
     protected override void Update()
     {
-
-        if (HasHealth())
+        if (HasHealth() && !_seek)
         {
-            Seek();
-            Flocking();
+            //Seek();
             AddForce(FollowLeader(leader, leaderRadius) * leaderWeight);
-            Move();
-
             if (_seek && !_shooted)
             {
                 _shooted = true;
                 StartCoroutine(RaycastShootRoutine());
+            }
+            else
+            {
+                AddForce(FollowLeader(_target, leaderRadius) * leaderWeight);
+
             }
         }
         else if (!HasHealth() && !_isEscaping)
@@ -73,8 +74,8 @@ public class BoidFlock : Agent
             ApplyEscape();
 
         }
-
-
+        Move();
+        Flocking();
         //Esto es para recargar la vida cuando llega a un punto de recarga
         float distancia = Vector3.Distance(transform.position, cargadorVida.position);
 
@@ -95,23 +96,19 @@ public class BoidFlock : Agent
 
     void Move()
     {
-        // 1️⃣ avoidance primero (prioridad alta)
+
         Vector3 avoidance = ObstacleAvoidance(_velocity.normalized);
         AddForce(avoidance * 3f); // peso extra
 
-        // 2️⃣ integrar fuerzas
         _velocity += _acceleration * Time.deltaTime;
         _velocity = Vector3.ClampMagnitude(_velocity, _maxVelocity);
 
-        // 3️⃣ mover
         _velocity.y = 0f;
         transform.position += _velocity * Time.deltaTime;
 
-        // 4️⃣ rotación
         if (_velocity.sqrMagnitude > 0.0001f)
             transform.forward = _velocity.normalized;
 
-        // 5️⃣ reset
         _acceleration = Vector3.zero;
     }
 

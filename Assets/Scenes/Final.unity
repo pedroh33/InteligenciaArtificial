@@ -1251,6 +1251,111 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 277362308}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &277379615
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 277379616}
+  - component: {fileID: 277379619}
+  - component: {fileID: 277379618}
+  - component: {fileID: 277379617}
+  m_Layer: 0
+  m_Name: RecargaVidaB
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &277379616
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277379615}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -30.35, y: -0.74, z: 8.51}
+  m_LocalScale: {x: 1.9192, y: 1.9192, z: 1.9192}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &277379617
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277379615}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &277379618
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277379615}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 90ffb211f528c1249ba6af945cbcd5fa, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &277379619
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 277379615}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &278514086
 GameObject:
   m_ObjectHideFlags: 0
@@ -2117,7 +2222,7 @@ MonoBehaviour:
   avoidDistance: 4
   avoidStrength: 10.36
   avoidRadius: 1.78
-  cargadorVida: {fileID: 896634932}
+  cargadorVida: {fileID: 277379616}
   _maxVelocity: 5
   _maxForce: 10
   _radiusSeparation: 5
@@ -4725,7 +4830,7 @@ MonoBehaviour:
   avoidDistance: 2
   avoidStrength: 7.51
   avoidRadius: 0.6
-  cargadorVida: {fileID: 896634932}
+  cargadorVida: {fileID: 277379616}
   cam: {fileID: 963194227}
   liderA: 0
 --- !u!23 &795411535
@@ -6034,7 +6139,7 @@ GameObject:
   - component: {fileID: 896634930}
   - component: {fileID: 896634929}
   m_Layer: 0
-  m_Name: RecargaVida
+  m_Name: RecargaVidaA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6120,7 +6225,7 @@ Transform:
   m_GameObject: {fileID: 896634928}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.79, y: -0.74, z: 8.51}
+  m_LocalPosition: {x: 28.18, y: -0.74, z: 8.51}
   m_LocalScale: {x: 1.9192, y: 1.9192, z: 1.9192}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14911,23 +15016,23 @@ MonoBehaviour:
   rayDistance: 20
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 512
   obstacleMask:
     serializedVersion: 2
     m_Bits: 64
   avoidDistance: 4
   avoidStrength: 10.36
-  avoidRadius: 1
+  avoidRadius: 1.78
   cargadorVida: {fileID: 896634932}
   _maxVelocity: 5
   _maxForce: 10
-  _radiusSeparation: 4.24
+  _radiusSeparation: 5
   _radiusDetect: 5
-  weightSeparation: 0.96
+  weightSeparation: 1
   weightAlignment: 1
   weightCohesion: 1
   leader: {fileID: 202221135}
-  leaderRadius: 78.7
+  leaderRadius: 5
   leaderWeight: 1
 --- !u!65 &2105771433
 BoxCollider:
@@ -15047,6 +15152,7 @@ SceneRoots:
   - {fileID: 32051803}
   - {fileID: 2088155344}
   - {fileID: 896634932}
+  - {fileID: 277379616}
   - {fileID: 310827022}
   - {fileID: 1571168949}
   - {fileID: 1796685669}

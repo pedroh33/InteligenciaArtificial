@@ -19,9 +19,9 @@ public class BoidFlock : Agent
     [SerializeField] float _radiusSeparation = 2f;
     [SerializeField] float _radiusDetect = 5f;
 
-    [SerializeField] float weightSeparation = 2.5f;
-    [SerializeField] float weightAlignment = 1.0f;
-    [SerializeField] float weightCohesion = 1.0f;
+    [SerializeField] public float weightSeparation = 2.5f;
+    [SerializeField] public float weightAlignment = 1.0f;
+    [SerializeField] public float weightCohesion = 1.0f;
 
     [Header("Leader")]
     [SerializeField] Transform leader;
@@ -54,28 +54,31 @@ public class BoidFlock : Agent
 
     protected override void Update()
     {
-        if (HasHealth() && !_seek)
+        if (HasHealth())
         {
-            //Seek();
-            AddForce(FollowLeader(leader, leaderRadius) * leaderWeight);
+            Seek();
+            Flocking();
+            Move();
+            
+
             if (_seek && !_shooted)
             {
                 _shooted = true;
                 StartCoroutine(RaycastShootRoutine());
-            }
-            else
-            {
-                AddForce(FollowLeader(_target, leaderRadius) * leaderWeight);
 
             }
+           
         }
         else if (!HasHealth() && !_isEscaping)
         {
             ApplyEscape();
 
         }
-        Move();
-        Flocking();
+
+
+
+
+
         //Esto es para recargar la vida cuando llega a un punto de recarga
         float distancia = Vector3.Distance(transform.position, cargadorVida.position);
 
@@ -118,6 +121,7 @@ public class BoidFlock : Agent
         AddForce(Separation(AllBoids, _radiusSeparation) * weightSeparation);
         AddForce(Alignment(AllBoids, _radiusDetect) * weightAlignment);
         AddForce(Cohesion(AllBoids, _radiusDetect) * weightCohesion);
+        AddForce(FollowLeader(leader, leaderRadius) * leaderWeight);
     }
     Vector3 Separation(List<Agent> boids, float radius)
     {

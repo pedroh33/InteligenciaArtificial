@@ -108,12 +108,12 @@ public class CharacterFOV : MonoBehaviour
 
             if (thisBoid != null) {
                 thisBoid.leaderWeight = 0f;
+                thisBoid.weightAlignment = 0;
+                thisBoid.weightCohesion = 0;
+                thisBoid.weightSeparation = 0;
             }         
-            transform.forward = Vector3.Lerp(
-                transform.forward,
-                (nearest.transform.position - transform.position).normalized,
-                Time.deltaTime * 2f
-            );
+            transform.forward = Vector3.Lerp(transform.forward, (nearest.transform.position - transform.position).normalized, Time.deltaTime * 2f);
+
         }
         else
         {
@@ -122,6 +122,9 @@ public class CharacterFOV : MonoBehaviour
             if (thisBoid != null)
             {
                 thisBoid.leaderWeight = 1f;
+                thisBoid.weightAlignment = 1;
+                thisBoid.weightCohesion = 1;
+                thisBoid.weightSeparation = 1;
             }
         }
     }

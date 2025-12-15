@@ -8,6 +8,10 @@ public class GameManager : MonoBehaviour
     Node _start, _end;
     public Enemy player;
     [SerializeField] LayerMask _mask;
+
+    public List<Agent> agents = new List<Agent>();
+
+
     private void Awake()
     {
         Instance = this;

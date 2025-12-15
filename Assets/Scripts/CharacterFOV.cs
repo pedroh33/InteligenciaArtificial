@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class CharacterFOV : MonoBehaviour
 {
-    public Transform target;
+    private Transform target;
     
     public float viewRadius;
+    public float radiusLookTarget = 7;
     public float viewAngle;
     Agent thisCharacter;
     public Enemy[] otherCharacter;
     [SerializeField] bool _call;
+    private bool _hasTarget;
 
     private void Start()
     {
@@ -20,25 +22,38 @@ public class CharacterFOV : MonoBehaviour
 
     void Update()
     {
-        if (InFOV(target))
-        {
-            GetComponent<MeshRenderer>().material.color = Color.red;
-            if (!_call)
-            {
-                foreach(var other in otherCharacter)
-                {
-                    other.SetPath(target.position);
-                }
-                thisCharacter.ApplySeek(target);
-                _call = true;
-            }
-        }
-        else
-        {
-            thisCharacter.DeactivateSeek(target);
-            GetComponent<MeshRenderer>().material.color = Color.white;
-            _call = false;
-        }
+       
+
+
+
+
+
+        //if (target != null)
+        //{
+
+
+
+
+        //    //if (InFOV(target) && _hasTarget)
+        //    //{
+        //    //    GetComponent<MeshRenderer>().material.color = Color.red;
+        //    //    if (!_call)
+        //    //    {
+        //    //        foreach(var other in otherCharacter)
+        //    //        {
+        //    //            other.SetPath(target.position);
+        //    //        }
+        //    //        thisCharacter.ApplySeek(target);
+        //    //        _call = true;
+        //    //    }
+        //    //}
+        //    //else
+        //    //{
+        //    //    thisCharacter.DeactivateSeek(target);
+        //    //    GetComponent<MeshRenderer>().material.color = Color.white;
+        //    //    _call = false;
+        //    //}
+        //}
         
     }
 
@@ -50,10 +65,42 @@ public class CharacterFOV : MonoBehaviour
         {
             if(Vector3.Angle(transform.forward, dir) <= viewAngle * 0.5f)
                 return GameManager.Instance.LineOfSight(transform.position, obj.position);
+
         }
 
         return false;
     }
+
+    public void LookAtEnemy()
+    {
+        Agent nearest = null;
+        var distance = Mathf.Infinity;
+
+
+        foreach (var targetAgent in GameManager.Instance.agents)
+        {
+            if (!targetAgent.isActiveAndEnabled) continue;
+
+            float dis = Vector3.Distance(targetAgent.transform.position, transform.position);
+            if (dis <= radiusLookTarget && dis <= distance )
+            {
+                distance = dis;
+                nearest = targetAgent;
+            }
+        }
+        if (nearest != null)
+        {
+            transform.forward = Vector3.Lerp(transform.forward, (nearest.transform.position - transform.position).normalized, Time.deltaTime * 2);
+            target = nearest.transform;
+            _hasTarget = true;
+        }
+        else
+        {
+            _hasTarget = false;
+        }
+
+    }
+
 
     private void OnDrawGizmos()
     {

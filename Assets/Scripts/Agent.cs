@@ -15,17 +15,17 @@ public class Agent : MonoBehaviour
     public float _maxSpeed = 8f;
 
     Transform _target;
-    [SerializeField] bool _seek;
+    public bool _seek;
+    public bool _shooted;
     [SerializeField] float _radiusArrive;
 
-    [SerializeField] bool _shooted;
     float rateOfFire = 3f;
     [SerializeField] float _stopDistance = 1.2f;
 
     [SerializeField] GameObject projectilePrefab;
     [SerializeField] float projectileSpeed;
     [SerializeField] float rayDistance = 20f;
-    [SerializeField] LayerMask enemyLayer;
+    public LayerMask enemyLayer;
 
     public Transform firepoint;
     [Header("Obstacle Avoidance")]
@@ -141,7 +141,7 @@ public class Agent : MonoBehaviour
     }
 
 
-    IEnumerator RaycastShootRoutine()
+    public IEnumerator RaycastShootRoutine()
     {
         while (_seek)
         {
@@ -234,10 +234,12 @@ public class Agent : MonoBehaviour
         sangre.SetActive(false);
 
         _currentSpeed = _baseSpeed;
+
+        GameManager.Instance.agents.Add(this);
     }
 
 
-   protected virtual void Update()
+    protected virtual void Update()
     {
         if (HasHealth())
         {

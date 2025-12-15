@@ -343,7 +343,7 @@ Transform:
   m_GameObject: {fileID: 32051799}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7049254, y: -0.055499427, z: -0.055499427, w: 0.7049254}
-  m_LocalPosition: {x: 15.53, y: 1, z: -12.49}
+  m_LocalPosition: {x: 15.53, y: 0, z: -12.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -993,15 +993,13 @@ MonoBehaviour:
   _currentSpeed: 0
   _maxSpeed: 8
   _seek: 0
-  _shooted: 0
-  _radiusArrive: 4.06
   _stopDistance: 3
-  projectileSpeed: 0
+  _shooted: 0
+  firepoint: {fileID: 1548390294}
   rayDistance: 20
   enemyLayer:
     serializedVersion: 2
     m_Bits: 1024
-  firepoint: {fileID: 1548390294}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 64
@@ -1741,15 +1739,13 @@ MonoBehaviour:
   _currentSpeed: 0
   _maxSpeed: 8
   _seek: 0
-  _shooted: 0
-  _radiusArrive: 14.1
   _stopDistance: 1.2
-  projectileSpeed: 0
+  _shooted: 0
+  firepoint: {fileID: 2077414547}
   rayDistance: 20
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
-  firepoint: {fileID: 2077414547}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 64
@@ -2060,7 +2056,7 @@ Transform:
   m_GameObject: {fileID: 369445939}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.89, y: 0, z: -13.88}
+  m_LocalPosition: {x: -4.89, y: 0, z: -17.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2108,31 +2104,29 @@ MonoBehaviour:
   _currentSpeed: 4
   _maxSpeed: 8
   _seek: 0
+  _stopDistance: 5
   _shooted: 0
-  _radiusArrive: 5
-  _stopDistance: 5.56
-  projectileSpeed: 3
+  firepoint: {fileID: 907294769}
   rayDistance: 20
   enemyLayer:
     serializedVersion: 2
     m_Bits: 512
-  firepoint: {fileID: 907294769}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 64
-  avoidDistance: 2
-  avoidStrength: 2
-  avoidRadius: 0.6
+  avoidDistance: 10.97
+  avoidStrength: 21.59
+  avoidRadius: 6.52
   cargadorVida: {fileID: 896634932}
   _maxVelocity: 5
-  _maxForce: 10
-  _radiusSeparation: 4.24
+  _maxForce: 2
+  _radiusSeparation: 5
   _radiusDetect: 5
-  weightSeparation: 0.96
+  weightSeparation: 1
   weightAlignment: 1
   weightCohesion: 1
   leader: {fileID: 795411532}
-  leaderRadius: 78.7
+  leaderRadius: 5
   leaderWeight: 1
 --- !u!65 &369445943
 BoxCollider:
@@ -4718,15 +4712,13 @@ MonoBehaviour:
   _currentSpeed: 0
   _maxSpeed: 8
   _seek: 0
-  _shooted: 0
-  _radiusArrive: 4.08
   _stopDistance: 3
-  projectileSpeed: 0
+  _shooted: 0
+  firepoint: {fileID: 1844945398}
   rayDistance: 20
   enemyLayer:
     serializedVersion: 2
     m_Bits: 512
-  firepoint: {fileID: 1844945398}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 64
@@ -5430,7 +5422,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 833444759}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Paredes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11138,15 +11130,13 @@ MonoBehaviour:
   _currentSpeed: 0
   _maxSpeed: 8
   _seek: 0
-  _shooted: 0
-  _radiusArrive: 0
   _stopDistance: 1.2
-  projectileSpeed: 0
+  _shooted: 0
+  firepoint: {fileID: 0}
   rayDistance: 20
   enemyLayer:
     serializedVersion: 2
     m_Bits: 0
-  firepoint: {fileID: 0}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
@@ -12616,15 +12606,13 @@ MonoBehaviour:
   _currentSpeed: 0
   _maxSpeed: 8
   _seek: 0
-  _shooted: 0
-  _radiusArrive: 0
   _stopDistance: 1.2
-  projectileSpeed: 0
+  _shooted: 0
+  firepoint: {fileID: 0}
   rayDistance: 20
   enemyLayer:
     serializedVersion: 2
     m_Bits: 0
-  firepoint: {fileID: 0}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 0
@@ -14764,7 +14752,7 @@ Transform:
   m_GameObject: {fileID: 2088155340}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 13.24, y: -0.5, z: -9.71}
+  m_LocalPosition: {x: 13.24, y: 0, z: -9.71}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14917,21 +14905,19 @@ MonoBehaviour:
   _currentSpeed: 4
   _maxSpeed: 8
   _seek: 0
+  _stopDistance: 5
   _shooted: 0
-  _radiusArrive: 5
-  _stopDistance: 5.56
-  projectileSpeed: 3
+  firepoint: {fileID: 1909834863}
   rayDistance: 20
   enemyLayer:
     serializedVersion: 2
     m_Bits: 1024
-  firepoint: {fileID: 1909834863}
   obstacleMask:
     serializedVersion: 2
     m_Bits: 64
-  avoidDistance: 2
+  avoidDistance: 4
   avoidStrength: 2
-  avoidRadius: 0.6
+  avoidRadius: 3
   cargadorVida: {fileID: 896634932}
   _maxVelocity: 5
   _maxForce: 10

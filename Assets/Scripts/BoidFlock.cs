@@ -28,6 +28,7 @@ public class BoidFlock : Agent
     [SerializeField] float leaderRadius = 15f;
     [SerializeField]public float leaderWeight = 1.5f;
 
+
     /*  void OnEnable()
       {
           if (!AllBoids.Contains(this))
@@ -48,16 +49,17 @@ public class BoidFlock : Agent
             0,
             Random.Range(-1f, 1f)
         ).normalized * _maxVelocity;
+
     }
 
     protected override void Update()
     {
-        //base.Update();
 
         if (HasHealth())
         {
             Seek();
             Flocking();
+            AddForce(FollowLeader(leader, leaderRadius) * leaderWeight);
             Move();
 
             if (_seek && !_shooted)
@@ -72,8 +74,6 @@ public class BoidFlock : Agent
 
         }
 
-        TraversePath();
-
 
         //Esto es para recargar la vida cuando llega a un punto de recarga
         float distancia = Vector3.Distance(transform.position, cargadorVida.position);
@@ -85,26 +85,22 @@ public class BoidFlock : Agent
             _isEscaping = false;
             _currentSpeed = _baseSpeed;
         }
-        //if (HasHealth())
-        //{
-        //    Flocking();
-        //    Move();
-        //}
 
     }
 
     void AddForce(Vector3 force)
     {
-        _acceleration += force;
+        _acceleration += force; 
     }
 
     void Move()
     {
-        _velocity.y = 0f;
 
         _velocity += _acceleration * Time.deltaTime;
         _velocity = Vector3.ClampMagnitude(_velocity, _maxVelocity);
 
+
+        _velocity.y = 0f;
         transform.position += _velocity * Time.deltaTime;
 
         // fijar altura
@@ -113,14 +109,20 @@ public class BoidFlock : Agent
         if (_velocity.sqrMagnitude > 0.0001f)
             transform.forward = _velocity.normalized;
 
+        Vector3 movDir = transform.forward;
+        Vector3 avoidance = ObstacleAvoidance(movDir);
+        Vector3 finalDir = (movDir + avoidance).normalized;
+
+        AddForce(finalDir);
+
         _acceleration = Vector3.zero;
     }
+
     void Flocking()
     {
         AddForce(Separation(AllBoids, _radiusSeparation) * weightSeparation);
         AddForce(Alignment(AllBoids, _radiusDetect) * weightAlignment);
         AddForce(Cohesion(AllBoids, _radiusDetect) * weightCohesion);
-        AddForce(FollowLeader(leader, leaderRadius) * leaderWeight);
     }
     Vector3 Separation(List<Agent> boids, float radius)
     {
@@ -209,28 +211,31 @@ public class BoidFlock : Agent
         Vector3 dir = leader.position - transform.position;
         float dist = dir.magnitude;
 
-        if (dist > radius)
+        if (dist < radius)
             return Vector3.zero;
 
         Vector3 desired = dir.normalized * _maxVelocity;
         desired *= dist / radius;
 
         Vector3 steering = desired - _velocity;
+
+
+
         return Vector3.ClampMagnitude(steering, _maxForce);
     }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _radiusSeparation);
+        Gizmos.DrawWireSphere(transform.position, avoidRadius);
 
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, _radiusDetect);
+        //Gizmos.color = Color.green;
+        //Gizmos.DrawWireSphere(transform.position, _radiusDetect);
 
-        if (leader != null)
-        {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawWireSphere(transform.position, leaderRadius);
-        }
+        //if (leader != null)
+        //{
+        //    Gizmos.color = Color.cyan;
+        //    Gizmos.DrawWireSphere(transform.position, leaderRadius);
+        //}
     }
 }

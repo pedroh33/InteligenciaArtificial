@@ -148,15 +148,15 @@ public class CharacterFOV : MonoBehaviour
         return false;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, viewRadius);
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.blue;
+    //    Gizmos.DrawWireSphere(transform.position, viewRadius);
 
-        Vector3 left = Quaternion.Euler(0, -viewAngle * 0.5f, 0) * transform.forward;
-        Vector3 right = Quaternion.Euler(0, viewAngle * 0.5f, 0) * transform.forward;
+    //    Vector3 left = Quaternion.Euler(0, -viewAngle * 0.5f, 0) * transform.forward;
+    //    Vector3 right = Quaternion.Euler(0, viewAngle * 0.5f, 0) * transform.forward;
 
-        Gizmos.DrawLine(transform.position, transform.position + left * viewRadius);
-        Gizmos.DrawLine(transform.position, transform.position + right * viewRadius);
-    }
+    //    Gizmos.DrawLine(transform.position, transform.position + left * viewRadius);
+    //    Gizmos.DrawLine(transform.position, transform.position + right * viewRadius);
+    //}
 }

@@ -20,22 +20,24 @@ public class Agent : MonoBehaviour
 
     Transform _target;
     public bool _seek;
+    [SerializeField] protected float _stopDistance;
+
     public bool _shooted;
-    [SerializeField] float _radiusArrive;
-
     float rateOfFire = 3f;
-    [SerializeField] float _stopDistance = 1.2f;
+    public Transform firepoint;
 
-    [SerializeField] float projectileSpeed;
+
+    //[SerializeField] protected float _radiusArrive;
+    //[SerializeField] float projectileSpeed;
     [SerializeField] float rayDistance = 20f;
     public LayerMask enemyLayer;
 
-    public Transform firepoint;
+
     [Header("Obstacle Avoidance")]
     [SerializeField] LayerMask obstacleMask;
     [SerializeField] float avoidDistance = 2f;
     [SerializeField] float avoidStrength = 2f;
-    [SerializeField] float avoidRadius = 0.6f;
+    [SerializeField] protected float avoidRadius = 0.6f;
 
     public Transform cargadorVida;
     protected bool _isEscaping;
@@ -89,7 +91,7 @@ public class Agent : MonoBehaviour
         if (dir.magnitude <= 0.3f)
             _path.RemoveAt(0);
     }
-    Vector3 ObstacleAvoidance(Vector3 moveDir)
+    protected Vector3 ObstacleAvoidance(Vector3 moveDir)
     {
         Vector3 origin = transform.position + Vector3.up * 0.5f;
 

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class BoidFlock : Agent
 {
-    public static List<BoidFlock> AllBoids = new List<BoidFlock>();
+    public static List<Agent> AllBoids;
 
     [Header("Movement")]
     [SerializeField] float _maxVelocity = 5f;
@@ -28,19 +28,21 @@ public class BoidFlock : Agent
     [SerializeField] float leaderRadius = 15f;
     [SerializeField] float leaderWeight = 1.5f;
 
-    void OnEnable()
-    {
-        if (!AllBoids.Contains(this))
-            AllBoids.Add(this);
-    }
+    /*  void OnEnable()
+      {
+          if (!AllBoids.Contains(this))
+              AllBoids.Add(this);
+      }
 
-    void OnDisable()
+      void OnDisable()
+      {
+          AllBoids.Remove(this);
+      }
+    */
+    protected override void Start()
     {
-        AllBoids.Remove(this);
-    }
-
-    void Start()
-    {
+        AllBoids = GameManager.Instance.tipoTrueAgents;
+        base.Start();
         _velocity = new Vector3(
             Random.Range(-1f, 1f),
             0,
@@ -48,14 +50,15 @@ public class BoidFlock : Agent
         ).normalized * _maxVelocity;
     }
 
-    protected override void Update()
+    private void Update()
     {
-        base.Update();
+       // base.Update();
         if (HasHealth())
         {
-            Flocking();
-            Move();
+            
         }
+        Flocking();
+        Move();
     }
 
     void AddForce(Vector3 force)
@@ -82,11 +85,11 @@ public class BoidFlock : Agent
         AddForce(Cohesion(AllBoids, _radiusDetect) * weightCohesion);
         AddForce(FollowLeader(leader, leaderRadius) * leaderWeight);
     }
-    Vector3 Separation(List<BoidFlock> boids, float radius)
+    Vector3 Separation(List<Agent> boids, float radius)
     {
         Vector3 desired = Vector3.zero;
 
-        foreach (BoidFlock boid in boids)
+        foreach (Agent boid in boids)
         {
             if (boid == this) continue;
 
@@ -107,19 +110,19 @@ public class BoidFlock : Agent
         return Vector3.ClampMagnitude(steering, _maxForce);
     }
 
-    Vector3 Alignment(List<BoidFlock> boids, float radius)
+    Vector3 Alignment(List<Agent> boids, float radius)
     {
         Vector3 sum = Vector3.zero;
         int count = 0;
 
-        foreach (BoidFlock boid in boids)
+        foreach (Agent boid in boids)
         {
             if (boid == this) continue;
 
             float dist = Vector3.Distance(transform.position, boid.transform.position);
             if (dist > radius) continue;
 
-            sum += boid._velocity;
+            sum += this._velocity;
             count++;
         }
 
@@ -132,12 +135,12 @@ public class BoidFlock : Agent
         return Vector3.ClampMagnitude(steering, _maxForce);
     }
 
-    Vector3 Cohesion(List<BoidFlock> boids, float radius)
+    Vector3 Cohesion(List<Agent> boids, float radius)
     {
         Vector3 sum = Vector3.zero;
         int count = 0;
 
-        foreach (BoidFlock boid in boids)
+        foreach (Agent boid in boids)
         {
             if (boid == this) continue;
 

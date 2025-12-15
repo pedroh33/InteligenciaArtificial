@@ -5,107 +5,129 @@ using UnityEngine;
 public class CharacterFOV : MonoBehaviour
 {
     private Transform target;
-    
-    public float viewRadius;
-    public float radiusLookTarget = 7;
-    public float viewAngle;
+
+    [Header("FOV")]
+    public float viewRadius = 10f;
+    public float radiusLookTarget = 7f;
+    public float viewAngle = 90f;
+
     Agent thisCharacter;
     public Enemy[] otherCharacter;
+
     [SerializeField] bool _call;
     private bool _hasTarget;
 
     private void Start()
     {
         thisCharacter = GetComponent<Agent>();
-        this.transform.forward = thisCharacter.transform.forward;
+        transform.forward = thisCharacter.transform.forward;
     }
 
     void Update()
     {
-       
+        LookAtEnemy();
 
+        if (target == null)
+        {
+            thisCharacter.DeactivateSeek(null);
+            GetComponent<MeshRenderer>().material.color = Color.white;
+            _call = false;
+            return;
+        }
 
+        if (InFOV(target) && _hasTarget)
+        {
+            GetComponent<MeshRenderer>().material.color = Color.red;
 
+            if (!_call)
+            {
+                foreach (var other in otherCharacter)
+                {
+                    other.SetPath(target.position);
+                }
 
+                thisCharacter.ApplySeek(target);
+                _call = true;
+            }
+        }
+        else
+        {
+            thisCharacter.DeactivateSeek(target);
+            GetComponent<MeshRenderer>().material.color = Color.white;
+            _call = false;
+        }
+    }
 
-        //if (target != null)
-        //{
+    void LookAtEnemy()
+    {
+        Agent nearest = null;
+        float minDistance = Mathf.Infinity;
 
+        List<Agent> enemyList = GetEnemyList();
 
+        foreach (var agent in enemyList)
+        {
+            if (!agent.isActiveAndEnabled) continue;
+            if (agent == thisCharacter) continue;
 
+            Vector3 dir = agent.transform.position - transform.position;
+            float distance = dir.magnitude;
 
-        //    //if (InFOV(target) && _hasTarget)
-        //    //{
-        //    //    GetComponent<MeshRenderer>().material.color = Color.red;
-        //    //    if (!_call)
-        //    //    {
-        //    //        foreach(var other in otherCharacter)
-        //    //        {
-        //    //            other.SetPath(target.position);
-        //    //        }
-        //    //        thisCharacter.ApplySeek(target);
-        //    //        _call = true;
-        //    //    }
-        //    //}
-        //    //else
-        //    //{
-        //    //    thisCharacter.DeactivateSeek(target);
-        //    //    GetComponent<MeshRenderer>().material.color = Color.white;
-        //    //    _call = false;
-        //    //}
-        //}
-        
+            if (distance > radiusLookTarget) continue;
+
+            if (Vector3.Angle(transform.forward, dir) > viewAngle * 0.5f) continue;
+            if (!GameManager.Instance.LineOfSight(transform.position, agent.transform.position)) continue;
+
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                nearest = agent;
+            }
+        }
+
+        if (nearest != null)
+        {
+            target = nearest.transform;
+            _hasTarget = true;
+
+            transform.forward = Vector3.Lerp(
+                transform.forward,
+                (nearest.transform.position - transform.position).normalized,
+                Time.deltaTime * 2f
+            );
+        }
+        else
+        {
+            target = null;
+            _hasTarget = false;
+        }
+    }
+
+    List<Agent> GetEnemyList()
+    {
+        return thisCharacter.tipo
+            ? GameManager.Instance.tipoFalseAgents
+            : GameManager.Instance.tipoTrueAgents;
     }
 
     public bool InFOV(Transform obj)
     {
-        var dir = obj.position - transform.position;
+        Vector3 dir = obj.position - transform.position;
 
-        if(dir.magnitude <= viewRadius)
+        if (dir.magnitude <= viewRadius)
         {
-            if(Vector3.Angle(transform.forward, dir) <= viewAngle * 0.5f)
+            if (Vector3.Angle(transform.forward, dir) <= viewAngle * 0.5f)
+            {
                 return GameManager.Instance.LineOfSight(transform.position, obj.position);
-
+            }
         }
 
         return false;
     }
 
-    public void LookAtEnemy()
-    {
-        Agent nearest = null;
-        var distance = Mathf.Infinity;
-
-
-        foreach (var targetAgent in GameManager.Instance.agents)
-        {
-            if (!targetAgent.isActiveAndEnabled) continue;
-
-            float dis = Vector3.Distance(targetAgent.transform.position, transform.position);
-            if (dis <= radiusLookTarget && dis <= distance )
-            {
-                distance = dis;
-                nearest = targetAgent;
-            }
-        }
-        if (nearest != null)
-        {
-            transform.forward = Vector3.Lerp(transform.forward, (nearest.transform.position - transform.position).normalized, Time.deltaTime * 2);
-            target = nearest.transform;
-            _hasTarget = true;
-        }
-        else
-        {
-            _hasTarget = false;
-        }
-
-    }
-
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-
         Gizmos.DrawWireSphere(transform.position, viewRadius);
 
         Vector3 left = Quaternion.Euler(0, -viewAngle * 0.5f, 0) * transform.forward;

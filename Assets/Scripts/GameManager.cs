@@ -9,8 +9,9 @@ public class GameManager : MonoBehaviour
     public Enemy player;
     [SerializeField] LayerMask _mask;
 
-    public List<Agent> agents = new List<Agent>();
-
+    //public List<Agent> agents = new List<Agent>();
+    public List<Agent> tipoTrueAgents = new List<Agent>();
+    public List<Agent> tipoFalseAgents = new List<Agent>();
 
     private void Awake()
     {

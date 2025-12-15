@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Agent : MonoBehaviour
 {
+    public bool tipo;
     [SerializeField] int _maxHealth;
     private int _currentHealth;
     List<Vector3> _path = new List<Vector3>();
@@ -22,7 +23,7 @@ public class Agent : MonoBehaviour
     float rateOfFire = 3f;
     [SerializeField] float _stopDistance = 1.2f;
 
-    [SerializeField] GameObject projectilePrefab;
+   // [SerializeField] GameObject projectilePrefab;
     [SerializeField] float projectileSpeed;
     [SerializeField] float rayDistance = 20f;
     public LayerMask enemyLayer;
@@ -226,16 +227,22 @@ public class Agent : MonoBehaviour
 
 
 
-    private void Start()
+    protected virtual void Start()
     {
         _currentHealth = _maxHealth;
         muzzleFlash.SetActive(false);
         _shooted = false;
         sangre.SetActive(false);
-
         _currentSpeed = _baseSpeed;
-
-        GameManager.Instance.agents.Add(this);
+       
+        if (tipo)
+        {
+            GameManager.Instance.tipoTrueAgents.Add(this);
+        }
+        else
+        {
+            GameManager.Instance.tipoFalseAgents.Add(this);
+        }
     }
 
 

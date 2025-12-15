@@ -68,10 +68,15 @@ public class BoidFlock : Agent
 
     void Move()
     {
+        _velocity.y = 0f;
+
         _velocity += _acceleration * Time.deltaTime;
         _velocity = Vector3.ClampMagnitude(_velocity, _maxVelocity);
 
         transform.position += _velocity * Time.deltaTime;
+
+        // fijar altura
+        transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
 
         if (_velocity.sqrMagnitude > 0.0001f)
             transform.forward = _velocity.normalized;

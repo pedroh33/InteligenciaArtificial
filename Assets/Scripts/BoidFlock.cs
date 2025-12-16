@@ -63,7 +63,15 @@ public class BoidFlock : Agent
         {
             ApplyEscape(); 
             TraversePath();
-            
+            float distancia = Vector3.Distance(transform.position, cargadorVida.position);
+            if (distancia < 3f)
+            {
+                health = 120;
+                _isEscaping = false;
+                _isGoing = false;
+                _currentSpeed = _baseSpeed;
+                return;
+            }
             return; 
         }
 
@@ -77,13 +85,19 @@ public class BoidFlock : Agent
             StartCoroutine(RaycastShootRoutine());
         }
 
-        float distancia = Vector3.Distance(transform.position, cargadorVida.position);
-        if (distancia < 3f)
+     /*   float distancia = Vector3.Distance(transform.position, cargadorVida.position);
+        if (distancia < 10f)
         {
+            Debug.Log("Recargo vida");
             health = 120;
             _isGoing = false;
             _isEscaping = false;
             _currentSpeed = _baseSpeed;
+            _velocity = transform.forward * _maxVelocity * 0.5f;
+        }*/
+        if (health <= 0)
+        {
+            Destroy(gameObject);
         }
     }
 
@@ -212,8 +226,6 @@ public class BoidFlock : Agent
         desired *= dist / radius;
 
         Vector3 steering = desired - _velocity;
-
-
 
         return Vector3.ClampMagnitude(steering, _maxForce);
     }

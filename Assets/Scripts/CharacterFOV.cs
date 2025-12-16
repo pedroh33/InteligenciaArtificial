@@ -24,7 +24,7 @@ public class CharacterFOV : MonoBehaviour
         if(thisCharacter.TryGetComponent<BoidFlock>(out var boidFlock))
         {
             thisBoid = boidFlock;
-            Debug.Log("Instancio");
+           // Debug.Log("Instancio");
         }
         
         transform.forward = thisCharacter.transform.forward;

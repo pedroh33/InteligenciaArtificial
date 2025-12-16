@@ -1,5 +1,6 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -109,7 +110,7 @@ public class Agent : MonoBehaviour
         if (Physics.SphereCast(origin, avoidRadius, moveDir, out RaycastHit hit, avoidDistance, obstacleMask))
         {
             Vector3 dirToObstacle = hit.point - transform.position;
-            float angle = Vector3.SignedAngle(transform.forward, dirToObstacle, Vector3.up);
+            float angle = Vector3.SignedAngle(moveDir, dirToObstacle, Vector3.up);
 
             Vector3 avoidDir = angle >= 0 ? -transform.right : transform.right;
 
@@ -182,7 +183,7 @@ public class Agent : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, rayDistance, enemyLayer))
         {
-            Debug.Log($"Raycast impactó a: {hit.collider.name}");
+            Debug.Log($"Raycast impactÃ³ a: {hit.collider.name}");
 
             Agent enemigoImpactado = hit.collider.GetComponentInParent<Agent>();
 
@@ -211,11 +212,11 @@ public class Agent : MonoBehaviour
     {
         health -= cantidad;
         StartCoroutine(Sangrar());
-        Debug.Log($"{name} recibió {cantidad} de daño. Vida actual: {health}");
+        Debug.Log($"{name} recibiÃ³ {cantidad} de daÃ±o. Vida actual: {health}");
 
         if (health <= 0)
         {
-            Debug.Log($"{name} murió");
+            Debug.Log($"{name} muriÃ³");
         }
     }
 
@@ -300,6 +301,8 @@ public class Agent : MonoBehaviour
             _isGoing = false;
             _isEscaping = false;
             _currentSpeed = _baseSpeed;
+            _seek = false;
+            Seek();
         }
     }
     private void LateUpdate()

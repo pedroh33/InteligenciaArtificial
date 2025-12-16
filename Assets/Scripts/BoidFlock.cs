@@ -31,8 +31,8 @@ public class BoidFlock : Agent
     [SerializeField] public float weightAlignmentValue;
     [SerializeField] public float weightCohesionValue;
     [SerializeField] public float weightSeparationValue;
-    
-  
+
+
 
     /*  void OnEnable()
       {

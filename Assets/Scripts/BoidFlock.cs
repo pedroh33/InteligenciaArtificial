@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class BoidFlock : Agent
 {
-    public static List<Agent> AllBoids;
+    public List<Agent> AllBoids;
 
     [Header("Movement")]
     [SerializeField] float _maxVelocity = 5f;
@@ -47,8 +47,18 @@ public class BoidFlock : Agent
     */
     protected override void Start()
     {
-        AllBoids = GameManager.Instance.tipoTrueAgents;
         base.Start();
+
+        if (tipo)
+        {
+            AllBoids = GameManager.Instance.tipoTrueAgents;
+
+        }
+        else
+        {
+            AllBoids = GameManager.Instance.tipoFalseAgents;
+        }
+
         _velocity = new Vector3(
             Random.Range(-1f, 1f),
             0,
@@ -106,24 +116,57 @@ public class BoidFlock : Agent
         _acceleration += force; 
     }
 
+    //void Move()
+    //{
+
+    //    Vector3 avoidance = ObstacleAvoidance(_velocity.normalized);
+    //    AddForce(avoidance * 3f); // peso extra
+
+    //    _velocity += _acceleration * Time.deltaTime;
+    //    _velocity = Vector3.ClampMagnitude(_velocity, _maxVelocity);
+
+    //    _velocity.y = 0f;
+    //    transform.position += _velocity * Time.deltaTime;
+
+    //    if (_velocity.sqrMagnitude > 0.0001f && !_seek)
+    //        transform.forward = _velocity.normalized;
+
+    //    _acceleration = Vector3.zero;
+    //}
+    [Header("Collision")]
+    [SerializeField] LayerMask wallMask;
+    [SerializeField] float capsuleRadius = 0.35f;
+    [SerializeField] float capsuleHeight = 1.6f;
+    [SerializeField] float skinWidth = 0.05f;
     void Move()
     {
-
         Vector3 avoidance = ObstacleAvoidance(_velocity.normalized);
-        AddForce(avoidance * 3f); // peso extra
+        AddForce(avoidance * 3f);
 
         _velocity += _acceleration * Time.deltaTime;
         _velocity = Vector3.ClampMagnitude(_velocity, _maxVelocity);
-
         _velocity.y = 0f;
-        transform.position += _velocity * Time.deltaTime;
+
+        Vector3 displacement = _velocity * Time.deltaTime;
+
+        Vector3 p1 = transform.position + Vector3.up * capsuleRadius;
+        Vector3 p2 = transform.position + Vector3.up * (capsuleHeight - capsuleRadius);
+
+        if (Physics.CapsuleCast(p1,p2,capsuleRadius,displacement.normalized,out RaycastHit hit,displacement.magnitude + skinWidth,wallMask))
+        {
+            Vector3 slideDir = Vector3.ProjectOnPlane(displacement, hit.normal);
+            transform.position += slideDir;
+        }
+        else
+        {
+            transform.position += displacement;
+        }
 
         if (_velocity.sqrMagnitude > 0.0001f && !_seek)
             transform.forward = _velocity.normalized;
 
         _acceleration = Vector3.zero;
     }
-
 
     void Flocking()
     {
